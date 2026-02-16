@@ -5,7 +5,7 @@ import org.example.insuranceapp.infrastructure.persistence.entity.CountyEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {CityPersistenceMapper.class})
 public interface CountyPersistenceMapper {
     CountyEntity toEntity(County county);
     @Mapping(target = "country.counties", ignore = true)
