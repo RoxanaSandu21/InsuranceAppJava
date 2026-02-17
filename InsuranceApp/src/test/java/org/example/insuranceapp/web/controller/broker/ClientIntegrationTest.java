@@ -1,9 +1,9 @@
 package org.example.insuranceapp.web.controller.broker;
 
+import org.example.insuranceapp.domain.building.BuildingRepository;
 import org.example.insuranceapp.domain.client.Client;
-import org.example.insuranceapp.infrastructure.persistence.repository.JpaBuildingRepository;
-import org.example.insuranceapp.infrastructure.persistence.ClientRepositoryAdapter;
-import org.example.insuranceapp.infrastructure.persistence.repository.JpaPolicyRepository;
+import org.example.insuranceapp.domain.client.ClientRepository;
+import org.example.insuranceapp.domain.policy.PolicyRepository;
 import org.example.insuranceapp.web.dto.client.ClientRequest;
 import tools.jackson.databind.ObjectMapper;
 import org.example.insuranceapp.domain.client.ClientType;
@@ -26,9 +26,9 @@ class ClientIntegrationTest {
 
     @Autowired private MockMvc mockMvc;
     @Autowired private ObjectMapper objectMapper;
-    @Autowired private ClientRepositoryAdapter clientRepositoryAdapter;
-    @Autowired private JpaPolicyRepository policyRepository;
-    @Autowired private JpaBuildingRepository buildingRepository;
+    @Autowired private ClientRepository clientRepository;
+    @Autowired private PolicyRepository policyRepository;
+    @Autowired private BuildingRepository buildingRepository;
 
     @Test
     void clientFullFlowTestSuccess() throws Exception {
@@ -43,7 +43,7 @@ class ClientIntegrationTest {
 
         Long clientId = objectMapper.readTree(response).get("id").asLong();
 
-        Client created = clientRepositoryAdapter.findById(clientId).orElseThrow();
+        Client created = clientRepository.findById(clientId).orElseThrow();
         assertEquals("Ion Popescu", created.getName());
         assertEquals("1900101123456", created.getIdentificationNumber());
         assertEquals("ion@test.com", created.getEmail());
@@ -62,7 +62,7 @@ class ClientIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("Ion Popescu Actualizat"));
 
-        Client updated = clientRepositoryAdapter.findById(clientId).orElseThrow();
+        Client updated = clientRepository.findById(clientId).orElseThrow();
         assertEquals("Ion Popescu Actualizat", updated.getName());
 
 
@@ -76,10 +76,10 @@ class ClientIntegrationTest {
     void getAllClients() throws Exception {
         policyRepository.deleteAll();
         buildingRepository.deleteAll();
-        clientRepositoryAdapter.deleteAll();
+        clientRepository.deleteAll();
 
-        clientRepositoryAdapter.save(new Client(ClientType.INDIVIDUAL, "Alice", "100", "a@test.com", "0700", "Addr1"));
-        clientRepositoryAdapter.save(new Client(ClientType.COMPANY, "Bob SRL", "200", "b@test.com", "0800", "Addr2"));
+        clientRepository.save(new Client(ClientType.INDIVIDUAL, "Alice", "100", "a@test.com", "0700", "Addr1"));
+        clientRepository.save(new Client(ClientType.COMPANY, "Bob SRL", "200", "b@test.com", "0800", "Addr2"));
 
         mockMvc.perform(get("/api/brokers/clients")
                         .param("page", "0")
@@ -94,7 +94,7 @@ class ClientIntegrationTest {
     @Test
     void searchClient() throws Exception {
         String uniqueId = "999888777";
-        clientRepositoryAdapter.save(new Client(ClientType.INDIVIDUAL, "Charlie", uniqueId, "c@test.com", "0900", "Addr3"));
+        clientRepository.save(new Client(ClientType.INDIVIDUAL, "Charlie", uniqueId, "c@test.com", "0900", "Addr3"));
 
         mockMvc.perform(get("/api/brokers/clients")
                         .param("identificationNumber", uniqueId)
@@ -113,14 +113,14 @@ class ClientIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)));
 
-        long before = clientRepositoryAdapter.count();
+        long before = clientRepository.count();
 
         mockMvc.perform(post("/api/brokers/clients")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isConflict());
 
-        assertEquals(before, clientRepositoryAdapter.count());
+        assertEquals(before, clientRepository.count());
     }
 
     @Test

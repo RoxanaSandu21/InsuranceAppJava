@@ -1,8 +1,8 @@
 package org.example.insuranceapp.web.controller.admin;
 
 import org.example.insuranceapp.domain.broker.Broker;
-import org.example.insuranceapp.infrastructure.persistence.repository.JpaBrokerRepository;
-import org.example.insuranceapp.infrastructure.persistence.repository.JpaPolicyRepository;
+import org.example.insuranceapp.domain.broker.BrokerRepository;
+import org.example.insuranceapp.domain.policy.PolicyRepository;
 import org.example.insuranceapp.web.dto.broker.BrokerRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,8 +32,8 @@ class BrokerIntegrationTest {
 
     @Autowired private MockMvc mockMvc;
     @Autowired private ObjectMapper objectMapper;
-    @Autowired private JpaBrokerRepository brokerRepository;
-    @Autowired private JpaPolicyRepository policyRepository;
+    @Autowired private BrokerRepository brokerRepository;
+    @Autowired private PolicyRepository policyRepository;
 
     @BeforeEach
     void setUp() {

@@ -5,7 +5,7 @@ import org.example.insuranceapp.web.dto.policy.PolicyDetails;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {ClientMapper.class, BuildingMapper.class, BrokerMapper.class, CurrencyMapper.class})
 public interface PolicyDetailsMapper {
     @Mapping(target = "client", source = "client")
     @Mapping(target = "building", source = "building")

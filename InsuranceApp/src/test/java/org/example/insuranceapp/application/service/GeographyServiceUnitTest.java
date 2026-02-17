@@ -2,11 +2,11 @@ package org.example.insuranceapp.application.service;
 
 import org.example.insuranceapp.application.exception.NotFoundException;
 import org.example.insuranceapp.domain.geography.city.City;
+import org.example.insuranceapp.domain.geography.city.CityRepository;
 import org.example.insuranceapp.domain.geography.country.Country;
+import org.example.insuranceapp.domain.geography.country.CountryRepository;
 import org.example.insuranceapp.domain.geography.county.County;
-import org.example.insuranceapp.infrastructure.persistence.repository.JpaCityRepository;
-import org.example.insuranceapp.infrastructure.persistence.repository.JpaCountryRepository;
-import org.example.insuranceapp.infrastructure.persistence.repository.JpaCountyRepository;
+import org.example.insuranceapp.domain.geography.county.CountyRepository;
 import org.example.insuranceapp.web.dto.geography.CityResponse;
 import org.example.insuranceapp.web.dto.geography.CountryResponse;
 import org.example.insuranceapp.web.dto.geography.CountyResponse;
@@ -29,9 +29,9 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class GeographyServiceUnitTest {
 
-    @Mock private JpaCountryRepository countryRepository;
-    @Mock private JpaCountyRepository countyRepository;
-    @Mock private JpaCityRepository cityRepository;
+    @Mock private CountryRepository countryRepository;
+    @Mock private CountyRepository countyRepository;
+    @Mock private CityRepository cityRepository;
 
     @InjectMocks private GeographyService geographyService;
 

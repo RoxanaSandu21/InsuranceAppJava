@@ -1,11 +1,11 @@
 package org.example.insuranceapp.web.controller.broker;
 
 import org.example.insuranceapp.domain.geography.city.City;
+import org.example.insuranceapp.domain.geography.city.CityRepository;
 import org.example.insuranceapp.domain.geography.country.Country;
+import org.example.insuranceapp.domain.geography.country.CountryRepository;
 import org.example.insuranceapp.domain.geography.county.County;
-import org.example.insuranceapp.infrastructure.persistence.repository.JpaCityRepository;
-import org.example.insuranceapp.infrastructure.persistence.repository.JpaCountryRepository;
-import org.example.insuranceapp.infrastructure.persistence.repository.JpaCountyRepository;
+import org.example.insuranceapp.domain.geography.county.CountyRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +24,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class GeographyIntegrationTest {
 
     @Autowired private MockMvc mockMvc;
-    @Autowired private JpaCountryRepository countryRepository;
-    @Autowired private JpaCountyRepository countyRepository;
-    @Autowired private JpaCityRepository cityRepository;
+    @Autowired private CountryRepository countryRepository;
+    @Autowired private CountyRepository countyRepository;
+    @Autowired private CityRepository cityRepository;
 
     private Long savedCountryId;
     private Long savedCountyId;

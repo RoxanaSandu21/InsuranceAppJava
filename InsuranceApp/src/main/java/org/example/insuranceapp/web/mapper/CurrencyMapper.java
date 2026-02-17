@@ -12,5 +12,6 @@ public interface CurrencyMapper {
     CurrencyResponse toResponse(Currency currency);
 
     @Mapping(source = "active", target = "active")
+    @Mapping(target = "id", ignore = true)
     Currency toEntity(CurrencyRequest currencyRequest);
 }

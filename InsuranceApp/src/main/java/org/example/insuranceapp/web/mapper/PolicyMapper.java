@@ -15,5 +15,17 @@ public interface PolicyMapper {
     @Mapping(target = "currencyId", source = "currency.id")
     PolicyResponse toResponse(Policy policy);
 
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "policyNumber", ignore = true)
+    @Mapping(target = "policyStatus", ignore = true)
+    @Mapping(target = "finalPremium", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
+    @Mapping(target = "cancellationDate", ignore = true)
+    @Mapping(target = "cancellationReason", ignore = true)
+    @Mapping(target = "client", ignore = true)
+    @Mapping(target = "building", ignore = true)
+    @Mapping(target = "broker", ignore = true)
+    @Mapping(target = "currency", ignore = true)
     Policy toEntity(PolicyRequest policyRequest);
 }

@@ -41,6 +41,11 @@ public class CountyRepositoryAdapter implements CountyRepository {
     }
 
     @Override
+    public void deleteAll(){
+        jpaRepository.deleteAll();
+    }
+
+    @Override
     public boolean existsById(Long countyId){
         return jpaRepository.existsById(countyId);
     }

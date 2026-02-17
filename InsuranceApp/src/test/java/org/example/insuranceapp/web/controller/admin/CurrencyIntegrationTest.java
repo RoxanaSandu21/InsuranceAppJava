@@ -1,18 +1,25 @@
 package org.example.insuranceapp.web.controller.admin;
 
 import org.example.insuranceapp.domain.broker.Broker;
+import org.example.insuranceapp.domain.broker.BrokerRepository;
 import org.example.insuranceapp.domain.building.Building;
+import org.example.insuranceapp.domain.building.BuildingRepository;
 import org.example.insuranceapp.domain.building.BuildingType;
 import org.example.insuranceapp.domain.building.RiskIndicator;
 import org.example.insuranceapp.domain.client.Client;
+import org.example.insuranceapp.domain.client.ClientRepository;
 import org.example.insuranceapp.domain.client.ClientType;
 import org.example.insuranceapp.domain.geography.city.City;
+import org.example.insuranceapp.domain.geography.city.CityRepository;
 import org.example.insuranceapp.domain.geography.country.Country;
+import org.example.insuranceapp.domain.geography.country.CountryRepository;
 import org.example.insuranceapp.domain.geography.county.County;
+import org.example.insuranceapp.domain.geography.county.CountyRepository;
 import org.example.insuranceapp.domain.metadata.currency.Currency;
+import org.example.insuranceapp.domain.metadata.currency.CurrencyRepository;
 import org.example.insuranceapp.domain.policy.Policy;
+import org.example.insuranceapp.domain.policy.PolicyRepository;
 import org.example.insuranceapp.domain.policy.PolicyStatus;
-import org.example.insuranceapp.infrastructure.persistence.ClientRepositoryAdapter;
 import org.example.insuranceapp.infrastructure.persistence.repository.*;
 import org.example.insuranceapp.web.dto.metadata.CurrencyRequest;
 import org.junit.jupiter.api.BeforeEach;
@@ -43,20 +50,20 @@ class CurrencyIntegrationTest {
 
     @Autowired private MockMvc mockMvc;
     @Autowired private ObjectMapper objectMapper;
-    @Autowired private JpaCurrencyRepository currencyRepository;
-    @Autowired private JpaPolicyRepository policyRepository;
-    @Autowired private ClientRepositoryAdapter clientRepositoryAdapter;
-    @Autowired private JpaBuildingRepository buildingRepository;
-    @Autowired private JpaBrokerRepository brokerRepository;
-    @Autowired private JpaCityRepository cityRepository;
-    @Autowired private JpaCountyRepository countyRepository;
-    @Autowired private JpaCountryRepository countryRepository;
+    @Autowired private CurrencyRepository currencyRepository;
+    @Autowired private PolicyRepository policyRepository;
+    @Autowired private ClientRepository clientRepository;
+    @Autowired private BuildingRepository buildingRepository;
+    @Autowired private BrokerRepository brokerRepository;
+    @Autowired private CityRepository cityRepository;
+    @Autowired private CountyRepository countyRepository;
+    @Autowired private CountryRepository countryRepository;
 
     @BeforeEach
     void setUp() {
         policyRepository.deleteAll();
         buildingRepository.deleteAll();
-        clientRepositoryAdapter.deleteAll();
+        clientRepository.deleteAll();
         brokerRepository.deleteAll();
         currencyRepository.deleteAll();
         cityRepository.deleteAll();
@@ -103,7 +110,7 @@ class CurrencyIntegrationTest {
         Country country = countryRepository.save(new Country("Romania"));
         County county = countyRepository.save(new County("Bucuresti", country));
         City city = cityRepository.save(new City("Bucuresti", county));
-        Client client = clientRepositoryAdapter.save(new Client(ClientType.INDIVIDUAL, "Ion", "123", "i@t.com", "07", "A"));
+        Client client = clientRepository.save(new Client(ClientType.INDIVIDUAL, "Ion", "123", "i@t.com", "07", "A"));
         Building building = buildingRepository.save(new Building(client, "Strada", 1, city, 2020, BuildingType.RESIDENTIAL, 1, 100L, BigDecimal.TEN, RiskIndicator.NONE));
         Broker broker = brokerRepository.save(new Broker("B01", "Broker", "b@t.com", "07", true, BigDecimal.ONE));
 

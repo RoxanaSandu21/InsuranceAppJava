@@ -8,7 +8,7 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface PolicyPersistenceMapper {
     PolicyEntity toEntity(Policy policy);
-    @Mapping(target = "client.policies", ignore = true)
-    @Mapping(target = "building.policies", ignore = true)
+    @Mapping(target = "client", ignore = true)
+    //@Mapping(target = "building.policies", ignore = true)
     Policy toDomain(PolicyEntity entity);
 }

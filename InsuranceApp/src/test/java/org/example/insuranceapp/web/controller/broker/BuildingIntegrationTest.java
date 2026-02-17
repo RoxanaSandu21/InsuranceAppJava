@@ -1,15 +1,15 @@
 package org.example.insuranceapp.web.controller.broker;
 
 import org.example.insuranceapp.domain.building.Building;
+import org.example.insuranceapp.domain.building.BuildingRepository;
 import org.example.insuranceapp.domain.building.RiskIndicator;
+import org.example.insuranceapp.domain.client.ClientRepository;
 import org.example.insuranceapp.domain.geography.city.City;
+import org.example.insuranceapp.domain.geography.city.CityRepository;
 import org.example.insuranceapp.domain.geography.country.Country;
+import org.example.insuranceapp.domain.geography.country.CountryRepository;
 import org.example.insuranceapp.domain.geography.county.County;
-import org.example.insuranceapp.infrastructure.persistence.ClientRepositoryAdapter;
-import org.example.insuranceapp.infrastructure.persistence.repository.JpaBuildingRepository;
-import org.example.insuranceapp.infrastructure.persistence.repository.JpaCityRepository;
-import org.example.insuranceapp.infrastructure.persistence.repository.JpaCountryRepository;
-import org.example.insuranceapp.infrastructure.persistence.repository.JpaCountyRepository;
+import org.example.insuranceapp.domain.geography.county.CountyRepository;
 import tools.jackson.databind.ObjectMapper;
 import org.example.insuranceapp.domain.building.BuildingType;
 import org.example.insuranceapp.domain.client.Client;
@@ -39,11 +39,11 @@ class BuildingIntegrationTest {
     @Autowired private MockMvc mockMvc;
     @Autowired private ObjectMapper objectMapper;
 
-    @Autowired private ClientRepositoryAdapter clientRepositoryAdapter;
-    @Autowired private JpaBuildingRepository buildingRepository;
-    @Autowired private JpaCountryRepository countryRepository;
-    @Autowired private JpaCountyRepository countyRepository;
-    @Autowired private JpaCityRepository cityRepository;
+    @Autowired private ClientRepository clientRepository;
+    @Autowired private BuildingRepository buildingRepository;
+    @Autowired private CountryRepository countryRepository;
+    @Autowired private CountyRepository countyRepository;
+    @Autowired private CityRepository cityRepository;
 
     private Long savedClientId;
     private Long savedCityId;
@@ -58,7 +58,7 @@ class BuildingIntegrationTest {
         savedCityId = city.getId();
 
         Client client = new Client(ClientType.INDIVIDUAL, "Test Client", "9998887776665", "test@client.com", "0722111222", "Adresa Test");
-        client = clientRepositoryAdapter.save(client);
+        client = clientRepository.save(client);
         savedClientId = client.getId();
     }
 

@@ -2,9 +2,9 @@ package org.example.insuranceapp.application.service;
 
 import org.example.insuranceapp.application.exception.NotFoundException;
 import org.example.insuranceapp.application.exception.NotUniqueException;
+import org.example.insuranceapp.domain.broker.BrokerRepository;
 import org.example.insuranceapp.web.mapper.BrokerMapper;
 import org.example.insuranceapp.domain.broker.Broker;
-import org.example.insuranceapp.infrastructure.persistence.repository.JpaBrokerRepository;
 import org.example.insuranceapp.web.dto.broker.BrokerRequest;
 import org.example.insuranceapp.web.dto.broker.BrokerResponse;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,7 +29,7 @@ import static org.mockito.Mockito.*;
 class BrokerServiceUnitTest {
 
     @Mock
-    private JpaBrokerRepository brokerRepository;
+    private BrokerRepository brokerRepository;
 
     @Mock
     private BrokerMapper brokerMapper;

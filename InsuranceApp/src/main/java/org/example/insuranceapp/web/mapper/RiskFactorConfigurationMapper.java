@@ -11,5 +11,6 @@ public interface RiskFactorConfigurationMapper {
     @Mapping(source = "active", target = "active")
     RiskFactorConfigurationResponse toResponse(RiskFactorConfiguration riskFactorConfiguration);
     @Mapping(source = "active", target = "active")
+    @Mapping(target = "id", ignore = true)
     RiskFactorConfiguration toEntity(RiskFactorConfigurationRequest riskFactorConfigurationRequest);
 }

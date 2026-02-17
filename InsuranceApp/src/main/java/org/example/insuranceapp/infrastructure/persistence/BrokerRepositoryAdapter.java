@@ -40,6 +40,16 @@ public class BrokerRepositoryAdapter implements BrokerRepository {
     }
 
     @Override
+    public void deleteAll(){
+        jpaRepository.deleteAll();
+    }
+
+    @Override
+    public int count(){
+        return Math.toIntExact(jpaRepository.count());
+    }
+
+    @Override
     public boolean existsByBrokerCode(String brCode) {
         return jpaRepository.existsByBrokerCode(brCode);
     }

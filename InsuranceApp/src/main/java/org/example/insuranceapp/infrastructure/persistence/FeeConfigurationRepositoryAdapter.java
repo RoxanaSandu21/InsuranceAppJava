@@ -41,6 +41,16 @@ public class FeeConfigurationRepositoryAdapter implements FeeConfigurationReposi
     }
 
     @Override
+    public void deleteAll(){
+        jpaRepository.deleteAll();
+    }
+
+    @Override
+    public int count(){
+        return Math.toIntExact(jpaRepository.count());
+    }
+
+    @Override
     public List<FeeConfiguration> findAllByActiveTrue() {
         return jpaRepository.findAllByActiveTrue().stream().map(mapper::toDomain).toList();
     }

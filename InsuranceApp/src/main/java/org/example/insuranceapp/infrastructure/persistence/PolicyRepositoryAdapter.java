@@ -55,6 +55,16 @@ public class PolicyRepositoryAdapter implements PolicyRepository {
     }
 
     @Override
+    public void deleteAll(){
+        jpaRepository.deleteAll();
+    }
+
+    @Override
+    public boolean existsById(Long id){
+        return jpaRepository.existsById(id);
+    }
+
+    @Override
     public boolean existsByCurrencyIdAndPolicyStatus(Long id, PolicyStatus policyStatus) {
         return jpaRepository.existsByCurrencyIdAndPolicyStatus(id, policyStatus);
     }

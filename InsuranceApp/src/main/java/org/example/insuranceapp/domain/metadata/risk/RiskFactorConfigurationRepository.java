@@ -15,4 +15,6 @@ public interface RiskFactorConfigurationRepository {
     boolean existsByLevelAndReferenceIdAndActiveTrue(RiskLevel level, Long aLong);
     int countByLevelAndReferenceIdAndActiveTrue(RiskLevel level, Long aLong);
 
+    void deleteAll();
+    int count();
 }

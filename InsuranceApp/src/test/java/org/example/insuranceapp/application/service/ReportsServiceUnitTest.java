@@ -1,8 +1,8 @@
 package org.example.insuranceapp.application.service;
 
 import org.example.insuranceapp.domain.building.BuildingType;
+import org.example.insuranceapp.domain.policy.PolicyRepository;
 import org.example.insuranceapp.domain.policy.PolicyStatus;
-import org.example.insuranceapp.infrastructure.persistence.repository.JpaPolicyRepository;
 import org.example.insuranceapp.infrastructure.report.ReportGrouping;
 import org.example.insuranceapp.infrastructure.report.ReportGroupingStrategy;
 import org.example.insuranceapp.web.dto.report.ReportDto;
@@ -25,7 +25,7 @@ import static org.mockito.Mockito.*;
 class ReportsServiceUnitTest {
 
     @Mock
-    private JpaPolicyRepository policyRepository;
+    private PolicyRepository policyRepository;
 
     @Mock
     private ReportGroupingStrategy countryStrategy;
@@ -48,7 +48,7 @@ class ReportsServiceUnitTest {
         LocalDate to = LocalDate.now();
         List<ReportDto> expectedReports = List.of(new ReportDto("Romania", "RON", 10L, BigDecimal.TEN, BigDecimal.TEN));
 
-        when(policyRepository.getPolicyReport(eq(countryStrategy), any(), any(), any(), any(), any()))
+        when(policyRepository.getPolicyReport(ReportGrouping.COUNTRY, any(), any(), any(), any(), any()))
                 .thenReturn(expectedReports);
 
 
@@ -59,7 +59,7 @@ class ReportsServiceUnitTest {
 
         assertEquals(1, result.size());
         assertEquals("Romania", result.get(0).groupingKey());
-        verify(policyRepository).getPolicyReport(countryStrategy, from, to, PolicyStatus.ACTIVE, 1L, BuildingType.RESIDENTIAL);
+        verify(policyRepository).getPolicyReport(ReportGrouping.COUNTRY, from, to, PolicyStatus.ACTIVE, 1L, BuildingType.RESIDENTIAL);
     }
 
     @Test

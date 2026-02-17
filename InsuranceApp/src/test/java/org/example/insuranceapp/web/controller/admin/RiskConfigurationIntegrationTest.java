@@ -1,8 +1,8 @@
 package org.example.insuranceapp.web.controller.admin;
 
 import org.example.insuranceapp.domain.metadata.risk.RiskFactorConfiguration;
+import org.example.insuranceapp.domain.metadata.risk.RiskFactorConfigurationRepository;
 import org.example.insuranceapp.domain.metadata.risk.RiskLevel;
-import org.example.insuranceapp.infrastructure.persistence.repository.JpaRiskFactorConfigurationRepository;
 import org.example.insuranceapp.web.dto.metadata.RiskFactorConfigurationRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,7 +32,7 @@ class RiskConfigurationIntegrationTest {
 
     @Autowired private MockMvc mockMvc;
     @Autowired private ObjectMapper objectMapper;
-    @Autowired private JpaRiskFactorConfigurationRepository riskRepository;
+    @Autowired private RiskFactorConfigurationRepository riskRepository;
 
     @BeforeEach
     void setUp() {

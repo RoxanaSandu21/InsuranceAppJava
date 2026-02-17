@@ -2,10 +2,10 @@ package org.example.insuranceapp.application.service;
 
 import org.example.insuranceapp.application.exception.NotFoundException;
 import org.example.insuranceapp.application.exception.NotUniqueException;
+import org.example.insuranceapp.domain.client.ClientRepository;
 import org.example.insuranceapp.web.mapper.ClientMapper;
 import org.example.insuranceapp.domain.client.Client;
 import org.example.insuranceapp.domain.client.ClientType;
-import org.example.insuranceapp.infrastructure.persistence.ClientRepositoryAdapter;
 import org.example.insuranceapp.web.dto.client.ClientRequest;
 import org.example.insuranceapp.web.dto.client.ClientResponse;
 import org.junit.jupiter.api.Test;
@@ -27,7 +27,7 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class ClientServiceUnitTest {
 
-    @Mock private ClientRepositoryAdapter clientRepositoryAdapter;
+    @Mock private ClientRepository clientRepository;
 
     @Mock private ClientMapper clientMapper;
 
@@ -38,8 +38,8 @@ class ClientServiceUnitTest {
     void createClient_Success() {
         ClientRequest req = new ClientRequest(ClientType.INDIVIDUAL, "Ion", "123", "i@test.com", "0722", "Address");
         ClientResponse mockResponse = new ClientResponse(1L, ClientType.INDIVIDUAL, "Ion", "123", "i@test.com", "0722", "Address", null, null);
-        when(clientRepositoryAdapter.existsByIdentificationNumber("123")).thenReturn(false);
-        when(clientRepositoryAdapter.save(any(Client.class))).thenAnswer(inv -> {
+        when(clientRepository.existsByIdentificationNumber("123")).thenReturn(false);
+        when(clientRepository.save(any(Client.class))).thenAnswer(inv -> {
             Client c = inv.getArgument(0);
             c.setId(1L);
             return c;
@@ -50,16 +50,16 @@ class ClientServiceUnitTest {
 
         assertNotNull(res);
         assertEquals(1L, res.id());
-        verify(clientRepositoryAdapter).save(any(Client.class));
+        verify(clientRepository).save(any(Client.class));
     }
 
     @Test
     void createClient_ThrowsNotUnique() {
         ClientRequest req = new ClientRequest(ClientType.INDIVIDUAL, "Ion", "123", "i@test.com", "0722", "Address");
-        when(clientRepositoryAdapter.existsByIdentificationNumber("123")).thenReturn(true);
+        when(clientRepository.existsByIdentificationNumber("123")).thenReturn(true);
 
         assertThrows(NotUniqueException.class, () -> clientService.createClient(req));
-        verify(clientRepositoryAdapter, never()).save(any());
+        verify(clientRepository, never()).save(any());
     }
 
     @Test
@@ -68,7 +68,7 @@ class ClientServiceUnitTest {
         client.setId(1L);
         ClientResponse mockResponse = new ClientResponse(1L, ClientType.INDIVIDUAL, "Ion", "123", "i@test.com", "0722", "Address", null, null);
 
-        when(clientRepositoryAdapter.findByIdentificationNumber("123")).thenReturn(Optional.of(client));
+        when(clientRepository.findByIdentificationNumber("123")).thenReturn(Optional.of(client));
         when(clientMapper.toResponse(client)).thenReturn(mockResponse);
         Page<ClientResponse> result = clientService.searchClient(null, "123", Pageable.unpaged());
 
@@ -83,7 +83,7 @@ class ClientServiceUnitTest {
 
         Page<Client> page = new PageImpl<>(List.of(client));
 
-        when(clientRepositoryAdapter.findByNameContainingIgnoreCase("Ion", Pageable.unpaged())).thenReturn(page);
+        when(clientRepository.findByNameContainingIgnoreCase("Ion", Pageable.unpaged())).thenReturn(page);
         when(clientMapper.toResponse(client)).thenReturn(mockResponse);
 
         Page<ClientResponse> result = clientService.searchClient("Ion", null, Pageable.unpaged());
@@ -95,7 +95,7 @@ class ClientServiceUnitTest {
     @Test
     void searchClient_ById_NotFound() {
         Pageable pageable = Pageable.unpaged();
-        when(clientRepositoryAdapter.findByIdentificationNumber("999")).thenReturn(Optional.empty());
+        when(clientRepository.findByIdentificationNumber("999")).thenReturn(Optional.empty());
 
         Page<ClientResponse> result = clientService.searchClient(null, "999", pageable);
 
@@ -106,7 +106,7 @@ class ClientServiceUnitTest {
     @Test
     void searchClient_ByName_NotFound() {
         Pageable pageable = Pageable.unpaged();
-        when(clientRepositoryAdapter.findByNameContainingIgnoreCase("Unknown", pageable))
+        when(clientRepository.findByNameContainingIgnoreCase("Unknown", pageable))
                 .thenReturn(Page.empty());
 
         Page<ClientResponse> result = clientService.searchClient("Unknown", null, pageable);
@@ -117,7 +117,7 @@ class ClientServiceUnitTest {
     @Test
     void searchClient_NoParams_ReturnsEmpty() {
         Pageable pageable = Pageable.unpaged();
-        when(clientRepositoryAdapter.findAll(pageable)).thenReturn(Page.empty());
+        when(clientRepository.findAll(pageable)).thenReturn(Page.empty());
 
         Page<ClientResponse> result = clientService.searchClient(null, null, pageable);
 
@@ -132,15 +132,15 @@ class ClientServiceUnitTest {
         ClientRequest req = new ClientRequest(ClientType.INDIVIDUAL, "New Name", "123", "new@test.com", "111", "New Addr");
         ClientResponse mockResponse = new ClientResponse(1L, ClientType.INDIVIDUAL, "New Name", "123", "new@test.com", "111", "New Addr", null, null);
 
-        when(clientRepositoryAdapter.findById(1L)).thenReturn(Optional.of(existing));
-        when(clientRepositoryAdapter.save(any(Client.class))).thenAnswer(inv -> inv.getArgument(0));
+        when(clientRepository.findById(1L)).thenReturn(Optional.of(existing));
+        when(clientRepository.save(any(Client.class))).thenAnswer(inv -> inv.getArgument(0));
         when(clientMapper.toResponse(any(Client.class))).thenReturn(mockResponse);
 
         ClientResponse res = clientService.updateClient(1L, req);
 
         assertEquals("New Name", res.name());
         assertEquals("123", res.identificationNumber());
-        verify(clientRepositoryAdapter).save(existing);
+        verify(clientRepository).save(existing);
     }
 
     @Test
@@ -152,9 +152,9 @@ class ClientServiceUnitTest {
         ClientRequest req = new ClientRequest(ClientType.INDIVIDUAL, "Ion", "456", "test", "00", "Ad");
         ClientResponse mockResponse = new ClientResponse(1L, ClientType.INDIVIDUAL, "Ion", "456", "test", "00", "Ad", null, null);
 
-        when(clientRepositoryAdapter.findById(1L)).thenReturn(Optional.of(existing));
-        when(clientRepositoryAdapter.existsByIdentificationNumber("456")).thenReturn(false);
-        when(clientRepositoryAdapter.save(any(Client.class))).thenAnswer(inv -> inv.getArgument(0));
+        when(clientRepository.findById(1L)).thenReturn(Optional.of(existing));
+        when(clientRepository.existsByIdentificationNumber("456")).thenReturn(false);
+        when(clientRepository.save(any(Client.class))).thenAnswer(inv -> inv.getArgument(0));
         when(clientMapper.toResponse(any(Client.class))).thenReturn(mockResponse);
 
         ClientResponse res = clientService.updateClient(1L, req);
@@ -172,7 +172,7 @@ class ClientServiceUnitTest {
 
         ClientRequest req = new ClientRequest(ClientType.INDIVIDUAL, "Ion", "200", "t", "0", "A");
 
-        when(clientRepositoryAdapter.findById(1L)).thenReturn(Optional.of(existing));
+        when(clientRepository.findById(1L)).thenReturn(Optional.of(existing));
 
         assertThrows(IllegalArgumentException.class, () -> clientService.updateClient(1L, req));
     }
@@ -186,8 +186,8 @@ class ClientServiceUnitTest {
 
         ClientRequest req = new ClientRequest(ClientType.INDIVIDUAL, "Ion", "200", "t", "0", "A");
 
-        when(clientRepositoryAdapter.findById(1L)).thenReturn(Optional.of(existing));
-        when(clientRepositoryAdapter.existsByIdentificationNumber("200")).thenReturn(true);
+        when(clientRepository.findById(1L)).thenReturn(Optional.of(existing));
+        when(clientRepository.existsByIdentificationNumber("200")).thenReturn(true);
 
         assertThrows(NotUniqueException.class, () -> clientService.updateClient(1L, req));
     }
@@ -195,7 +195,7 @@ class ClientServiceUnitTest {
     @Test
     void updateClient_NotFound() {
         ClientRequest req = new ClientRequest(ClientType.INDIVIDUAL, "New", "123", "e", "p", "a");
-        when(clientRepositoryAdapter.findById(99L)).thenReturn(Optional.empty());
+        when(clientRepository.findById(99L)).thenReturn(Optional.empty());
 
         assertThrows(NotFoundException.class, () -> clientService.updateClient(99L, req));
     }
@@ -206,7 +206,7 @@ class ClientServiceUnitTest {
         client.setId(1L);
         ClientResponse mockResponse = new ClientResponse(1L, ClientType.INDIVIDUAL, "Ion", "123", "i@test.com", "0722", "Address", null, null);
 
-        when(clientRepositoryAdapter.findById(1L)).thenReturn(Optional.of(client));
+        when(clientRepository.findById(1L)).thenReturn(Optional.of(client));
         when(clientMapper.toResponse(any(Client.class))).thenReturn(mockResponse);
 
         ClientResponse res = clientService.getDetails(1L);
@@ -218,7 +218,7 @@ class ClientServiceUnitTest {
 
     @Test
     void getDetails_NotFound() {
-        when(clientRepositoryAdapter.findById(99L)).thenReturn(Optional.empty());
+        when(clientRepository.findById(99L)).thenReturn(Optional.empty());
         assertThrows(NotFoundException.class, () -> clientService.getDetails(99L));
     }
 

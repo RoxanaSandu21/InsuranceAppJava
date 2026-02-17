@@ -2,18 +2,25 @@ package org.example.insuranceapp.web.controller.broker;
 
 import org.example.insuranceapp.application.service.PolicyService;
 import org.example.insuranceapp.domain.broker.Broker;
+import org.example.insuranceapp.domain.broker.BrokerRepository;
 import org.example.insuranceapp.domain.building.Building;
+import org.example.insuranceapp.domain.building.BuildingRepository;
 import org.example.insuranceapp.domain.building.BuildingType;
 import org.example.insuranceapp.domain.building.RiskIndicator;
 import org.example.insuranceapp.domain.client.Client;
+import org.example.insuranceapp.domain.client.ClientRepository;
 import org.example.insuranceapp.domain.client.ClientType;
 import org.example.insuranceapp.domain.geography.city.City;
+import org.example.insuranceapp.domain.geography.city.CityRepository;
 import org.example.insuranceapp.domain.geography.country.Country;
+import org.example.insuranceapp.domain.geography.country.CountryRepository;
 import org.example.insuranceapp.domain.geography.county.County;
+import org.example.insuranceapp.domain.geography.county.CountyRepository;
 import org.example.insuranceapp.domain.metadata.currency.Currency;
+import org.example.insuranceapp.domain.metadata.currency.CurrencyRepository;
 import org.example.insuranceapp.domain.policy.Policy;
+import org.example.insuranceapp.domain.policy.PolicyRepository;
 import org.example.insuranceapp.domain.policy.PolicyStatus;
-import org.example.insuranceapp.infrastructure.persistence.ClientRepositoryAdapter;
 import org.example.insuranceapp.infrastructure.persistence.repository.*;
 import org.example.insuranceapp.web.dto.policy.PolicyRequest;
 import org.junit.jupiter.api.BeforeEach;
@@ -51,21 +58,21 @@ class PolicyIntegrationTest {
     private ObjectMapper objectMapper;
 
     @Autowired
-    private JpaPolicyRepository policyRepository;
+    private PolicyRepository policyRepository;
     @Autowired
-    private ClientRepositoryAdapter clientRepositoryAdapter;
+    private ClientRepository clientRepository;
     @Autowired
-    private JpaBrokerRepository brokerRepository;
+    private BrokerRepository brokerRepository;
     @Autowired
-    private JpaBuildingRepository buildingRepository;
+    private BuildingRepository buildingRepository;
     @Autowired
-    private JpaCityRepository cityRepository;
+    private CityRepository cityRepository;
     @Autowired
-    private JpaCountyRepository countyRepository;
+    private CountyRepository countyRepository;
     @Autowired
-    private JpaCountryRepository countryRepository;
+    private CountryRepository countryRepository;
     @Autowired
-    private JpaCurrencyRepository currencyRepository;
+    private CurrencyRepository currencyRepository;
     @Autowired
     private PolicyService policyService;
 
@@ -79,7 +86,7 @@ class PolicyIntegrationTest {
     void setUp() {
         policyRepository.deleteAll();
         buildingRepository.deleteAll();
-        clientRepositoryAdapter.deleteAll();
+        clientRepository.deleteAll();
         brokerRepository.deleteAll();
         cityRepository.deleteAll();
         countyRepository.deleteAll();
@@ -91,7 +98,7 @@ class PolicyIntegrationTest {
         City city = cityRepository.save(new City("Bucuresti", county));
 
         Client client = new Client(ClientType.INDIVIDUAL, "Ion Asiguratul", "1900101123456", "ion@test.com", "0722111222", "Adresa");
-        client = clientRepositoryAdapter.save(client);
+        client = clientRepository.save(client);
         savedClientId = client.getId();
 
         Building building = new Building(client, "Str. Victoriei", 10, city, 2010, BuildingType.RESIDENTIAL, 2, 100L, new BigDecimal("100000.00"), RiskIndicator.NONE);
@@ -184,7 +191,7 @@ class PolicyIntegrationTest {
 
     private Policy createTestPolicy(PolicyStatus status, LocalDate startDate) {
         Policy policy = new Policy();
-        policy.setClient(clientRepositoryAdapter.findById(savedClientId).get());
+        policy.setClient(clientRepository.findById(savedClientId).get());
         policy.setBuilding(buildingRepository.findById(savedBuildingId).get());
         policy.setBroker(brokerRepository.findById(savedBrokerId).get());
         policy.setCurrency(currencyRepository.findById(savedCurrencyId).get());

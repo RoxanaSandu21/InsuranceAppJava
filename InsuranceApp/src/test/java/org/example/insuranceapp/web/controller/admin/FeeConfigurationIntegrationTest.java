@@ -1,8 +1,8 @@
 package org.example.insuranceapp.web.controller.admin;
 
 import org.example.insuranceapp.domain.metadata.fee.FeeConfiguration;
+import org.example.insuranceapp.domain.metadata.fee.FeeConfigurationRepository;
 import org.example.insuranceapp.domain.metadata.fee.FeeType;
-import org.example.insuranceapp.infrastructure.persistence.repository.JpaFeeConfigurationRepository;
 import org.example.insuranceapp.web.dto.metadata.FeeConfigurationRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,7 +33,7 @@ class FeeConfigurationIntegrationTest {
 
     @Autowired private MockMvc mockMvc;
     @Autowired private ObjectMapper objectMapper;
-    @Autowired private JpaFeeConfigurationRepository feeRepository;
+    @Autowired private FeeConfigurationRepository feeRepository;
 
     @BeforeEach
     void setUp() {

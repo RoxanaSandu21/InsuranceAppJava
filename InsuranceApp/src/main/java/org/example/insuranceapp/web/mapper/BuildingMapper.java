@@ -5,7 +5,7 @@ import org.example.insuranceapp.web.dto.building.BuildingResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {PolicyMapper.class})
 public interface BuildingMapper {
     @Mapping(source = "client.id", target = "clientId")
     @Mapping(source = "city.id", target = "geography.cityId")

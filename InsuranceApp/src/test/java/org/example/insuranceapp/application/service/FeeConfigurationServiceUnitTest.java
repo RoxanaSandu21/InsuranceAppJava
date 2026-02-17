@@ -1,10 +1,10 @@
 package org.example.insuranceapp.application.service;
 
 import org.example.insuranceapp.application.exception.NotFoundException;
+import org.example.insuranceapp.domain.metadata.fee.FeeConfigurationRepository;
 import org.example.insuranceapp.web.mapper.FeeConfigurationMapper;
 import org.example.insuranceapp.domain.metadata.fee.FeeConfiguration;
 import org.example.insuranceapp.domain.metadata.fee.FeeType;
-import org.example.insuranceapp.infrastructure.persistence.repository.JpaFeeConfigurationRepository;
 import org.example.insuranceapp.web.dto.metadata.FeeConfigurationRequest;
 import org.example.insuranceapp.web.dto.metadata.FeeConfigurationResponse;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,7 +30,7 @@ import static org.mockito.Mockito.*;
 class FeeConfigurationServiceUnitTest {
 
     @Mock
-    private JpaFeeConfigurationRepository feeConfigurationRepository;
+    private FeeConfigurationRepository feeConfigurationRepository;
 
     @Mock
     private FeeConfigurationMapper feeConfigurationMapper;

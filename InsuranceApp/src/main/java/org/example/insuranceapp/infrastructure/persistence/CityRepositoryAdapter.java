@@ -40,6 +40,11 @@ public class CityRepositoryAdapter implements CityRepository {
     }
 
     @Override
+    public void deleteAll(){
+        jpaRepository.deleteAll();
+    }
+
+    @Override
     public Page<City> findByCountyId(Long countyId, Pageable pageable){
         return jpaRepository.findByCountyId(countyId, pageable).map(mapper::toDomain);
     }

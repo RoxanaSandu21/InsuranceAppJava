@@ -9,5 +9,8 @@ public interface BrokerRepository {
     Broker save(Broker broker);
     Optional<Broker> findById(Long id);
     Page<Broker> findAll(Pageable pageable);
+    void deleteAll();
+    int count();
+
     boolean existsByBrokerCode(String s);
 }

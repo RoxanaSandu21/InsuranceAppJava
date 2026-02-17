@@ -10,5 +10,8 @@ public interface FeeConfigurationRepository {
     FeeConfiguration save(FeeConfiguration feeConfiguration);
     Optional<FeeConfiguration> findById(Long id);
     Page<FeeConfiguration> findAll(Pageable pageable);
+    void deleteAll();
     List<FeeConfiguration> findAllByActiveTrue();
+
+    int count();
 }

@@ -43,6 +43,16 @@ public class RiskFactorConfigurationRepositoryAdapter implements RiskFactorConfi
     }
 
     @Override
+    public void deleteAll(){
+        jpaRepository.deleteAll();
+    }
+
+    @Override
+    public int count(){
+        return Math.toIntExact(jpaRepository.count());
+    }
+
+    @Override
     public List<RiskFactorConfiguration> findByLevelAndReferenceIdAndActiveTrue(RiskLevel riskLevel, Long id) {
         return jpaRepository.findByLevelAndReferenceIdAndActiveTrue(riskLevel, id).stream().map(mapper::toDomain).toList();
     }

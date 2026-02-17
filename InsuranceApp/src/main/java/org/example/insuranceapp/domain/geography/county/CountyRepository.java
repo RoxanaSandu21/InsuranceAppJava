@@ -10,5 +10,7 @@ public interface CountyRepository {
     Optional<County> findById(Long id);
     Page<County> findAll(Pageable pageable);
     boolean existsById(Long countyId);
+    void deleteAll();
+
     Page<County> findByCountryId(Long countryId, Pageable pageable);
 }

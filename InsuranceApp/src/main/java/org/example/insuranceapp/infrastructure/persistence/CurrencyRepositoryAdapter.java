@@ -40,6 +40,11 @@ public class CurrencyRepositoryAdapter implements CurrencyRepository {
     }
 
     @Override
+    public void deleteAll(){
+        jpaRepository.deleteAll();
+    }
+
+    @Override
     public boolean existsByCode(String code) {
         return jpaRepository.existsByCode(code);
     }

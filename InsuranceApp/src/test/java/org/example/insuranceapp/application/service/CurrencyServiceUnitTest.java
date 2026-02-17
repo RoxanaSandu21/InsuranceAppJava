@@ -2,11 +2,11 @@ package org.example.insuranceapp.application.service;
 
 import org.example.insuranceapp.application.exception.NotFoundException;
 import org.example.insuranceapp.application.exception.NotUniqueException;
+import org.example.insuranceapp.domain.metadata.currency.CurrencyRepository;
+import org.example.insuranceapp.domain.policy.PolicyRepository;
 import org.example.insuranceapp.web.mapper.CurrencyMapper;
 import org.example.insuranceapp.domain.metadata.currency.Currency;
 import org.example.insuranceapp.domain.policy.PolicyStatus;
-import org.example.insuranceapp.infrastructure.persistence.repository.JpaCurrencyRepository;
-import org.example.insuranceapp.infrastructure.persistence.repository.JpaPolicyRepository;
 import org.example.insuranceapp.web.dto.metadata.CurrencyRequest;
 import org.example.insuranceapp.web.dto.metadata.CurrencyResponse;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,9 +30,9 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class CurrencyServiceUnitTest {
 
-    @Mock private JpaCurrencyRepository currencyRepository;
+    @Mock private CurrencyRepository currencyRepository;
     @Mock private CurrencyMapper currencyMapper;
-    @Mock private JpaPolicyRepository policyRepository;
+    @Mock private PolicyRepository policyRepository;
 
     @InjectMocks private CurrencyService currencyService;
 

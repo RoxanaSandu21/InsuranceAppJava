@@ -9,5 +9,6 @@ public interface CurrencyRepository {
     Currency save(Currency currency);
     Optional<Currency> findById(Long id);
     Page<Currency> findAll(Pageable pageable);
+    void deleteAll();
     boolean existsByCode(String code);
 }

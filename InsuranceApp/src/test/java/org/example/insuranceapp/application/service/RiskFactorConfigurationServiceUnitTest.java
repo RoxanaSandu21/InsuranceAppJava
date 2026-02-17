@@ -2,10 +2,10 @@ package org.example.insuranceapp.application.service;
 
 import org.example.insuranceapp.application.exception.NotFoundException;
 import org.example.insuranceapp.application.exception.NotUniqueException;
+import org.example.insuranceapp.domain.metadata.risk.RiskFactorConfigurationRepository;
 import org.example.insuranceapp.web.mapper.RiskFactorConfigurationMapper;
 import org.example.insuranceapp.domain.metadata.risk.RiskFactorConfiguration;
 import org.example.insuranceapp.domain.metadata.risk.RiskLevel;
-import org.example.insuranceapp.infrastructure.persistence.repository.JpaRiskFactorConfigurationRepository;
 import org.example.insuranceapp.web.dto.metadata.RiskFactorConfigurationRequest;
 import org.example.insuranceapp.web.dto.metadata.RiskFactorConfigurationResponse;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,7 +30,7 @@ import static org.mockito.Mockito.*;
 class RiskFactorConfigurationServiceUnitTest {
 
     @Mock
-    private JpaRiskFactorConfigurationRepository riskRepository;
+    private RiskFactorConfigurationRepository riskRepository;
 
     @Mock
     private RiskFactorConfigurationMapper riskMapper;

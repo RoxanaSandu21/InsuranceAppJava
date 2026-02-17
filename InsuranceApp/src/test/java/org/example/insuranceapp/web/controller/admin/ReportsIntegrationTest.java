@@ -1,18 +1,25 @@
 package org.example.insuranceapp.web.controller.admin;
 
 import org.example.insuranceapp.domain.broker.Broker;
+import org.example.insuranceapp.domain.broker.BrokerRepository;
 import org.example.insuranceapp.domain.building.Building;
+import org.example.insuranceapp.domain.building.BuildingRepository;
 import org.example.insuranceapp.domain.building.BuildingType;
 import org.example.insuranceapp.domain.building.RiskIndicator;
 import org.example.insuranceapp.domain.client.Client;
+import org.example.insuranceapp.domain.client.ClientRepository;
 import org.example.insuranceapp.domain.client.ClientType;
 import org.example.insuranceapp.domain.geography.city.City;
+import org.example.insuranceapp.domain.geography.city.CityRepository;
 import org.example.insuranceapp.domain.geography.country.Country;
+import org.example.insuranceapp.domain.geography.country.CountryRepository;
 import org.example.insuranceapp.domain.geography.county.County;
+import org.example.insuranceapp.domain.geography.county.CountyRepository;
 import org.example.insuranceapp.domain.metadata.currency.Currency;
+import org.example.insuranceapp.domain.metadata.currency.CurrencyRepository;
 import org.example.insuranceapp.domain.policy.Policy;
+import org.example.insuranceapp.domain.policy.PolicyRepository;
 import org.example.insuranceapp.domain.policy.PolicyStatus;
-import org.example.insuranceapp.infrastructure.persistence.ClientRepositoryAdapter;
 import org.example.insuranceapp.infrastructure.persistence.repository.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,14 +48,14 @@ class ReportsIntegrationTest {
     @Autowired private MockMvc mockMvc;
 
 
-    @Autowired private JpaPolicyRepository policyRepository;
-    @Autowired private ClientRepositoryAdapter clientRepositoryAdapter;
-    @Autowired private JpaBrokerRepository brokerRepository;
-    @Autowired private JpaBuildingRepository buildingRepository;
-    @Autowired private JpaCountryRepository countryRepository;
-    @Autowired private JpaCountyRepository countyRepository;
-    @Autowired private JpaCityRepository cityRepository;
-    @Autowired private JpaCurrencyRepository currencyRepository;
+    @Autowired private PolicyRepository policyRepository;
+    @Autowired private ClientRepository clientRepository;
+    @Autowired private BrokerRepository brokerRepository;
+    @Autowired private BuildingRepository buildingRepository;
+    @Autowired private CountryRepository countryRepository;
+    @Autowired private CountyRepository countyRepository;
+    @Autowired private CityRepository cityRepository;
+    @Autowired private CurrencyRepository currencyRepository;
 
     private Currency ron;
     private Currency eur;
@@ -60,7 +67,7 @@ class ReportsIntegrationTest {
         policyRepository.deleteAll();
         buildingRepository.deleteAll();
         brokerRepository.deleteAll();
-        clientRepositoryAdapter.deleteAll();
+        clientRepository.deleteAll();
         cityRepository.deleteAll();
         countyRepository.deleteAll();
         countryRepository.deleteAll();
@@ -84,7 +91,7 @@ class ReportsIntegrationTest {
         City london = cityRepository.save(new City("London", londonC));
 
 
-        Client client = clientRepositoryAdapter.save(new Client(ClientType.INDIVIDUAL, "Ion", "123", "i@test.com", "07", "Adresa"));
+        Client client = clientRepository.save(new Client(ClientType.INDIVIDUAL, "Ion", "123", "i@test.com", "07", "Adresa"));
         broker1 = brokerRepository.save(new Broker("B1", "Broker Alpha", "b1@t.com", "07", true, BigDecimal.TEN));
         broker2 = brokerRepository.save(new Broker("B2", "Broker Beta", "b2@t.com", "07", true, BigDecimal.TEN));
 
@@ -191,7 +198,7 @@ class ReportsIntegrationTest {
         Broker b = brokerRepository.findById(brokerId).get();
 
         Building build = buildingRepository.findAll().get(0);
-        Client client = clientRepositoryAdapter.findAll().get(0);
+        Client client = clientRepository.findAll().get(0);
 
         createPolicy(client, build, b, ron, PolicyStatus.ACTIVE, BigDecimal.TEN, startDate);
     }

@@ -9,5 +9,6 @@ public interface CountryRepository {
     Country save(Country country);
     Optional<Country> findById(Long id);
     boolean existsById(Long countryId);
+    void deleteAll();
     Page<Country> findAll(Pageable pageable);
 }

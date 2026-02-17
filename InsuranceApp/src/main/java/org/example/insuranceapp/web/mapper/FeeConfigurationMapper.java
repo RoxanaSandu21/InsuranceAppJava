@@ -11,5 +11,6 @@ public interface FeeConfigurationMapper {
     @Mapping(source = "active", target = "active")
     FeeConfigurationResponse toResponse(FeeConfiguration feeConfiguration);
     @Mapping(source = "active", target = "active")
+    @Mapping(target = "id", ignore = true)
     FeeConfiguration toEntity(FeeConfigurationRequest feeConfigurationRequest);
 }

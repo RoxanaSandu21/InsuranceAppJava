@@ -9,5 +9,6 @@ public interface CityRepository {
     City save(City city);
     Optional<City> findById(Long id);
     Page<City> findAll(Pageable pageable);
+    void deleteAll();
     Page<City> findByCountyId(Long countyId, Pageable pageable);
 }

@@ -14,6 +14,7 @@ public interface PolicyRepository {
     Policy save(Policy policy);
     Optional<Policy> findById(Long id);
     Page<Policy> findAll(Pageable pageable);
+    void deleteAll();
 
     boolean existsByCurrencyIdAndPolicyStatus(Long id, PolicyStatus policyStatus);
     int expirePolicies(LocalDate today);
@@ -26,4 +27,6 @@ public interface PolicyRepository {
                                     PolicyStatus status,
                                     Long currencyId,
                                     BuildingType buildingType);
+
+    boolean existsById(Long policyId);
 }

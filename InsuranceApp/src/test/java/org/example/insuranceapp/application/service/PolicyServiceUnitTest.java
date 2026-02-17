@@ -1,11 +1,11 @@
 package org.example.insuranceapp.application.service;
 
 import org.example.insuranceapp.application.exception.NotFoundException;
-import org.example.insuranceapp.infrastructure.persistence.ClientRepositoryAdapter;
-import org.example.insuranceapp.infrastructure.persistence.repository.JpaBrokerRepository;
-import org.example.insuranceapp.infrastructure.persistence.repository.JpaBuildingRepository;
-import org.example.insuranceapp.infrastructure.persistence.repository.JpaCurrencyRepository;
-import org.example.insuranceapp.infrastructure.persistence.repository.JpaPolicyRepository;
+import org.example.insuranceapp.domain.broker.BrokerRepository;
+import org.example.insuranceapp.domain.building.BuildingRepository;
+import org.example.insuranceapp.domain.client.ClientRepository;
+import org.example.insuranceapp.domain.metadata.currency.CurrencyRepository;
+import org.example.insuranceapp.domain.policy.PolicyRepository;
 import org.example.insuranceapp.web.mapper.PolicyDetailsMapper;
 import org.example.insuranceapp.web.mapper.PolicyMapper;
 import org.example.insuranceapp.domain.broker.Broker;
@@ -34,13 +34,13 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class PolicyServiceUnitTest {
-    @Mock private JpaPolicyRepository policyRepository;
+    @Mock private PolicyRepository policyRepository;
     @Mock private PolicyMapper policyMapper;
     @Mock private PolicyDetailsMapper policyDetailsMapper;
-    @Mock private ClientRepositoryAdapter clientRepositoryAdapter;
-    @Mock private JpaBuildingRepository buildingRepository;
-    @Mock private JpaBrokerRepository brokerRepository;
-    @Mock private JpaCurrencyRepository currencyRepository;
+    @Mock private ClientRepository clientRepository;
+    @Mock private BuildingRepository buildingRepository;
+    @Mock private BrokerRepository brokerRepository;
+    @Mock private CurrencyRepository currencyRepository;
     @Mock private PremiumCalculationService premiumCalculationService;
 
     @InjectMocks
@@ -81,7 +81,7 @@ public class PolicyServiceUnitTest {
         Policy entity = new Policy();
         PolicyResponse mockRes = new PolicyResponse(1000L, "POL-123", 1L, 10L, 100L, PolicyStatus.DRAFT, null, null, null, null, 5L, null, null, null);
 
-        when(clientRepositoryAdapter.findById(1L)).thenReturn(Optional.of(mockClient));
+        when(clientRepository.findById(1L)).thenReturn(Optional.of(mockClient));
         when(buildingRepository.findById(10L)).thenReturn(Optional.of(mockBuilding));
         when(brokerRepository.findById(100L)).thenReturn(Optional.of(mockBroker));
         when(currencyRepository.findById(5L)).thenReturn(Optional.of(mockCurrency));
@@ -106,7 +106,7 @@ public class PolicyServiceUnitTest {
 
         PolicyRequest req = new PolicyRequest(1L, 10L, 100L, LocalDate.now(), LocalDate.now().plusYears(1), BigDecimal.valueOf(100), 5L);
 
-        when(clientRepositoryAdapter.findById(1L)).thenReturn(Optional.of(mockClient));
+        when(clientRepository.findById(1L)).thenReturn(Optional.of(mockClient));
         when(buildingRepository.findById(10L)).thenReturn(Optional.of(mockBuilding));
 
         assertThrows(NotFoundException.class, () -> policyService.createDraft(req));

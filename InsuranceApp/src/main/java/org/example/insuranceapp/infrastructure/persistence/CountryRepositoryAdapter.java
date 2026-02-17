@@ -40,6 +40,11 @@ public class CountryRepositoryAdapter implements CountryRepository {
     }
 
     @Override
+    public void deleteAll(){
+        jpaRepository.deleteAll();
+    }
+
+    @Override
     public boolean existsById(Long countryId){
         return jpaRepository.existsById(countryId);
     }

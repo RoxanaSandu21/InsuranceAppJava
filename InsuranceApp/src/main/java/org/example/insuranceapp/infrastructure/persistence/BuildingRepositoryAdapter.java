@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -37,6 +38,21 @@ public class BuildingRepositoryAdapter implements BuildingRepository {
     @Override
     public Page<Building> findAll(Pageable pageable) {
         return jpaRepository.findAll(pageable).map(mapper::toDomain);
+    }
+
+    @Override
+    public List<Building> findAll(){
+        return jpaRepository.findAll().stream().map(mapper::toDomain).toList();
+    }
+
+    @Override
+    public void deleteAll(){
+        jpaRepository.deleteAll();
+    }
+
+    @Override
+    public long count(){
+        return jpaRepository.count();
     }
 
     @Override
