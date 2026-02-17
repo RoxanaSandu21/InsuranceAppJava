@@ -10,6 +10,10 @@ public interface BuildingPersistenceMapper {
     BuildingEntity toEntity(Building building);
 
     @Mapping(target = "client.buildings", ignore = true)
+    @Mapping(target = "client.policies", ignore = true)
     @Mapping(target = "city.buildings", ignore = true)
+    @Mapping(target = "city.county.cities", ignore = true)
+    @Mapping(target = "city.county.country.counties", ignore = true)
+    @Mapping(target = "policies", ignore = true)
     Building toDomain(BuildingEntity entity);
 }

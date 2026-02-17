@@ -86,7 +86,7 @@ public class PolicyRepositoryAdapter implements PolicyRepository {
             if (brokerId != null) {
                 p = cb.and(p, cb.equal(root.get("broker").get("id"), brokerId));
             }
-            if (p != null) {
+            if (policyStatus != null) {
                 p = cb.and(p, cb.equal(root.get("policyStatus"), policyStatus));
             }
             if (startDate != null) {

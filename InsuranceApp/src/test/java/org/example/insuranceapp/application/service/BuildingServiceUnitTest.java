@@ -2,8 +2,8 @@ package org.example.insuranceapp.application.service;
 
 import org.example.insuranceapp.application.exception.NotFoundException;
 import org.example.insuranceapp.domain.building.BuildingRepository;
-import org.example.insuranceapp.domain.client.ClientRepository;
 import org.example.insuranceapp.domain.geography.city.CityRepository;
+import org.example.insuranceapp.infrastructure.persistence.ClientRepositoryAdapter;
 import org.example.insuranceapp.web.mapper.BuildingMapper;
 import org.example.insuranceapp.domain.building.Building;
 import org.example.insuranceapp.domain.building.BuildingType;
@@ -37,7 +37,7 @@ import static org.mockito.Mockito.*;
 class BuildingServiceUnitTest {
 
     @Mock private BuildingRepository buildingRepository;
-    @Mock private ClientRepository clientRepository;
+    @Mock private ClientRepositoryAdapter clientRepositoryAdapter;
     @Mock private CityRepository cityRepository;
 
     @Mock private BuildingMapper buildingMapper;
@@ -70,7 +70,7 @@ class BuildingServiceUnitTest {
         GeographyResponse geo = new GeographyResponse(30L, "Sector 1", 20L, "Bucuresti", 10L, "Romania");
         BuildingResponse mockResponse = new BuildingResponse(100L, 1L, "Street", 1, 2020, BuildingType.RESIDENTIAL, 1, 100L, BigDecimal.TEN, null, geo, List.of());
 
-        when(clientRepository.findById(1L)).thenReturn(Optional.of(mockClient));
+        when(clientRepositoryAdapter.findById(1L)).thenReturn(Optional.of(mockClient));
         when(cityRepository.findById(30L)).thenReturn(Optional.of(mockCity));
         when(buildingRepository.save(any(Building.class))).thenReturn(mockBuilding);
         when(buildingMapper.toResponse(any(Building.class))).thenReturn(mockResponse);
@@ -86,7 +86,7 @@ class BuildingServiceUnitTest {
     @Test
     void registerBuilding_ClientNotFound() {
         BuildingRequest req = new BuildingRequest("Street", 1, 30L, 2020, BuildingType.RESIDENTIAL, 1, 100L, BigDecimal.TEN, RiskIndicator.FLOOD);
-        when(clientRepository.findById(99L)).thenReturn(Optional.empty());
+        when(clientRepositoryAdapter.findById(99L)).thenReturn(Optional.empty());
 
         assertThrows(NotFoundException.class, () -> buildingService.registerBuilding(99L, req));
     }
@@ -94,7 +94,7 @@ class BuildingServiceUnitTest {
     @Test
     void registerBuilding_CityNotFound() {
         BuildingRequest req = new BuildingRequest("Street", 1, 99L, 2020, BuildingType.RESIDENTIAL, 1, 100L, BigDecimal.TEN, RiskIndicator.FLOOD);
-        when(clientRepository.findById(1L)).thenReturn(Optional.of(mockClient));
+        when(clientRepositoryAdapter.findById(1L)).thenReturn(Optional.of(mockClient));
         when(cityRepository.findById(99L)).thenReturn(Optional.empty());
 
         assertThrows(NotFoundException.class, () -> buildingService.registerBuilding(1L, req));
@@ -129,7 +129,7 @@ class BuildingServiceUnitTest {
     void getBuildingsForClient_Success() {
         BuildingResponse mockResponse = new BuildingResponse(100L, 1L, "Street", 1, 2020, BuildingType.RESIDENTIAL, 1, 100L, BigDecimal.TEN, null, null, List.of());
 
-        when(clientRepository.existsById(1L)).thenReturn(true);
+        when(clientRepositoryAdapter.existsById(1L)).thenReturn(true);
         when(buildingRepository.findByClientId(eq(1L), any(Pageable.class)))
                 .thenReturn(new PageImpl<>(List.of(mockBuilding)));
         when(buildingMapper.toResponse(any(Building.class))).thenReturn(mockResponse);
@@ -143,7 +143,7 @@ class BuildingServiceUnitTest {
     @Test
     void getBuildingsForClient_ClientNotFound() {
         Pageable pageable = Pageable.unpaged();
-        when(clientRepository.existsById(99L)).thenReturn(false);
+        when(clientRepositoryAdapter.existsById(99L)).thenReturn(false);
         assertThrows(NotFoundException.class, () -> buildingService.getBuildingsForClient(99L, pageable));
     }
 }
