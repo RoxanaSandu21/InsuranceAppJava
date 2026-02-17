@@ -8,6 +8,8 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface CityPersistenceMapper {
     CityEntity toEntity(City city);
-    @Mapping(target = "county", ignore = true)
+    @Mapping(target = "buildings", ignore = true)
+    @Mapping(target = "county.cities", ignore = true)
+    @Mapping(target = "county.country.counties", ignore = true)
     City toDomain(CityEntity entity);
 }
