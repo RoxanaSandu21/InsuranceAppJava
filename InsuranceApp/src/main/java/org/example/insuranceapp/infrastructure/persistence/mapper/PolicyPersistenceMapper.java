@@ -9,6 +9,6 @@ import org.mapstruct.Mapping;
 public interface PolicyPersistenceMapper {
     PolicyEntity toEntity(Policy policy);
     @Mapping(target = "client", ignore = true)
-    //@Mapping(target = "building.policies", ignore = true)
+    @Mapping(target = "building.policies", ignore = true)
     Policy toDomain(PolicyEntity entity);
 }
